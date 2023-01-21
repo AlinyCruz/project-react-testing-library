@@ -6,13 +6,9 @@ import renderWhitRouter from '../renderWithRouter';
 
 describe('Teste o componente FavoritePokemon', () => {
   it('Teste se é exibida na tela a mensagem No favorite pokemon found', () => {
-    renderWhitRouter(<App />);
+    const { history } = renderWhitRouter(<App />);
 
-    const noFavorite = screen.getByRole('link', { name: /favorite pokémon/i });
-
-    act(() => {
-      userEvent.click(noFavorite);
-    });
+    act(() => history.push('/favorites'));
 
     const noFavorite2 = screen.getByText(/no favorite pokémon found/i);
 
@@ -22,12 +18,18 @@ describe('Teste o componente FavoritePokemon', () => {
   it('Teste se apenas são exibidos os Pokémon favoritados', () => {
     renderWhitRouter(<App />);
 
-    const favorite = screen.getByRole('link', { name: /favorite pokémon/i });
+    const moreDetails = screen.getByRole('link', { name: /more details/i });
 
-    act(() => {
-      userEvent.click(favorite);
-    });
+    userEvent.click(moreDetails);
 
-    expect(favorite).toBeInTheDocument();
+    const favorite = screen.getByRole('checkbox', { name: /pokémon favoritado\?/i });
+
+    userEvent.click(favorite);
+
+    const pokemonFavorite = screen.getByRole('link', { name: /favorite pokémon/i });
+
+    userEvent.click(pokemonFavorite);
+
+    expect(screen.getByText(/pikachu/i)).toBeInTheDocument();
   });
 });
