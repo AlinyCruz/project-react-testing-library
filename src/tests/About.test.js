@@ -13,7 +13,6 @@ describe(' Teste o componente About', () => {
 
   it('Teste se a página contém um heading h2 com o texto About Pokédex', () => {
     const aboutPokedex = screen.getByRole('heading', { name: /About Pokédex/i });
-
     expect(aboutPokedex).toBeInTheDocument();
   });
 
